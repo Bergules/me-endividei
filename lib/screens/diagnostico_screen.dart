@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import '../models/caso_model.dart';
+import '../services/auth_service.dart';
+import '../services/storage_service.dart';
 import 'resultado_screen.dart';
 
 const _azul = Color(0xFF5B9BD5);
@@ -12,8 +14,9 @@ const _fundo = Color(0xFFF5F7FA);
 
 class DiagnosticoScreen extends StatefulWidget {
   final CasoModel caso;
+  final VoidCallback? onConcluido;
 
-  const DiagnosticoScreen({super.key, required this.caso});
+  const DiagnosticoScreen({super.key, required this.caso, this.onConcluido});
 
   @override
   State<DiagnosticoScreen> createState() => _DiagnosticoScreenState();
@@ -222,7 +225,7 @@ class _DiagnosticoScreenState extends State<DiagnosticoScreen> {
     }
   }
 
-  void _avancar() {
+  Future<void> _avancar() async {
     if (_step == 0 && widget.caso.tipoDivida.isEmpty) {
       _showErro('Selecione o tipo de problema para continuar');
       return;
@@ -259,10 +262,25 @@ class _DiagnosticoScreenState extends State<DiagnosticoScreen> {
     if (_step < _totalSteps - 1) {
       setState(() => _step++);
     } else {
-      Navigator.push(
+      // Preenche nome do usuario logado se vazio
+      if (widget.caso.nome.isEmpty) {
+        widget.caso.nome = AuthService.displayName;
+        widget.caso.email = AuthService.email;
+      }
+      widget.caso.dataCriacao = DateTime.now();
+      await StorageService.salvarCaso(widget.caso);
+      if (!mounted) return;
+      widget.onConcluido?.call();
+      await Navigator.push(
         context,
         MaterialPageRoute(builder: (_) => ResultadoScreen(caso: widget.caso)),
       );
+      // Reset para novo diagnostico
+      setState(() {
+        _step = 0;
+        widget.caso.tipoDivida = '';
+        widget.caso.objetivo = '';
+      });
     }
   }
 

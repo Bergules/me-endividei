@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'screens/landing_screen.dart';
+import 'screens/auth_screen.dart';
 
 void main() {
   runApp(const MeEndivideiApp());
@@ -73,7 +73,7 @@ class MeEndivideiApp extends StatelessWidget {
           hintStyle: TextStyle(color: Color(0xFFA0AEC0)),
         ),
       ),
-      home: const LandingScreen(),
+      home: const AuthScreen(),
     );
   }
 }
