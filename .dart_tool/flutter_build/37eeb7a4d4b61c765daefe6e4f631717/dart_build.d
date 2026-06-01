@@ -1,0 +1,1 @@
+ C:\\Users\\begue\\me_endividei\\.dart_tool\\flutter_build\\37eeb7a4d4b61c765daefe6e4f631717\\dart_build_result.json:  C:\\Users\\begue\\flutter\\bin\\cache\\dart-sdk\\version C:\\Users\\begue\\me_endividei\\.dart_tool\\package_config.json C:\\Users\\begue\\me_endividei\\pubspec.yaml c:\\users\\begue\\me_endividei\\.dart_tool\\package_config.json
